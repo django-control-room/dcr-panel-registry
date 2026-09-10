@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ArrowUpRight, Lightbulb, Package, Search } from "lucide-react";
 
-import { panelsQuery, requestsQuery } from "@/lib/registry";
+import { panels } from "@/data/panels";
+import { wishlist } from "@/data/wishlist";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,17 +28,15 @@ export const Route = createFileRoute("/")({
 function RegistryIndex() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
-  const panels = useQuery(panelsQuery);
-  const requests = useQuery(requestsQuery);
 
   const categories = useMemo(() => {
-    const set = new Set((panels.data ?? []).map((p) => p.category));
+    const set = new Set(panels.map((p) => p.category));
     return ["All", ...Array.from(set).sort()];
-  }, [panels.data]);
+  }, []);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return (panels.data ?? []).filter((p) => {
+    return panels.filter((p) => {
       const matchesCategory = category === "All" || p.category === category;
       if (!matchesCategory) return false;
       if (!q) return true;
@@ -47,9 +45,7 @@ function RegistryIndex() {
         .toLowerCase()
         .includes(q);
     });
-  }, [panels.data, query, category]);
-
-  const requestCount = requests.data?.requests.length ?? 0;
+  }, [query, category]);
 
   return (
     <div>
@@ -101,9 +97,7 @@ function RegistryIndex() {
           <div>
             <h2 className="font-heading text-2xl font-bold">Available panels</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              {panels.isLoading
-                ? "Loading the registry…"
-                : `${results.length} of ${panels.data?.length ?? 0} panels`}
+              {results.length} of {panels.length} panels
             </p>
           </div>
           <Link
@@ -111,21 +105,15 @@ function RegistryIndex() {
             className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
           >
             <Lightbulb className="h-4 w-4 text-primary" />
-            {requestCount} panels people want
+            {wishlist.length} panels people want
             <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground" />
           </Link>
         </div>
 
-        {panels.isError && (
-          <p className="rounded-xl border border-border bg-card p-6 text-sm text-muted-foreground">
-            The registry couldn&apos;t be loaded right now. Please refresh the page.
-          </p>
-        )}
-
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {results.map((panel) => (
             <Link
-              key={panel.id}
+              key={panel.slug}
               to="/panels/$slug"
               params={{ slug: panel.slug }}
               className="group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-hover"
@@ -144,14 +132,14 @@ function RegistryIndex() {
                 {panel.description}
               </p>
               <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-                <code className="text-xs text-muted-foreground">{panel.install_cmd}</code>
+                <code className="text-xs text-muted-foreground">{panel.installCmd}</code>
                 <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" />
               </div>
             </Link>
           ))}
         </div>
 
-        {!panels.isLoading && results.length === 0 && (
+        {results.length === 0 && (
           <div className="rounded-2xl border border-border bg-card p-10 text-center shadow-soft">
             <h3 className="font-heading text-lg font-semibold">No panel matches that search</h3>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">

@@ -1,27 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowUp, Plus, Search } from "lucide-react";
 import { toast } from "sonner";
 
 import {
-  fetchMyVotes,
-  requestsQuery,
+  loadLocalIdeas,
+  loadVotedIds,
+  saveLocalIdeas,
+  saveVotedIds,
+  slugify,
   statusLabels,
-  submitRequest,
-  toggleVote,
-} from "@/lib/registry";
-
-const CATEGORIES = [
-  "Infrastructure",
-  "Performance",
-  "Background jobs",
-  "Database",
-  "Security",
-  "Integrations",
-  "Developer tooling",
-  "other",
-];
+  wishlist,
+  wishlistCategories,
+  type WishlistIdea,
+} from "@/data/wishlist";
 
 export const Route = createFileRoute("/wishlist")({
   head: () => ({
@@ -44,52 +36,63 @@ export const Route = createFileRoute("/wishlist")({
 });
 
 function Wishlist() {
-  const queryClient = useQueryClient();
   const [query, setQuery] = useState("");
   const [formOpen, setFormOpen] = useState(false);
+  const [localIdeas, setLocalIdeas] = useState<WishlistIdea[]>([]);
+  const [votedIds, setVotedIds] = useState<string[]>([]);
   const [form, setForm] = useState({
     title: "",
     summary: "",
     rationale: "",
     category: "other",
-    author_name: "",
+    author: "",
   });
 
-  const requests = useQuery(requestsQuery);
-  const myVotes = useQuery({ queryKey: ["my-votes"], queryFn: fetchMyVotes });
+  useEffect(() => {
+    setLocalIdeas(loadLocalIdeas());
+    setVotedIds(loadVotedIds());
+  }, []);
 
-  const vote = useMutation({
-    mutationFn: ({ id, hasVoted }: { id: string; hasVoted: boolean }) => toggleVote(id, hasVoted),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["panel_requests"] });
-      queryClient.invalidateQueries({ queryKey: ["my-votes"] });
-    },
-    onError: () => toast.error("Your vote couldn't be saved. Please try again."),
-  });
-
-  const create = useMutation({
-    mutationFn: submitRequest,
-    onSuccess: () => {
-      toast.success("Thanks — your panel idea is on the wishlist.");
-      setForm({ title: "", summary: "", rationale: "", category: "other", author_name: "" });
-      setFormOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["panel_requests"] });
-    },
-    onError: () => toast.error("That idea couldn't be saved. Check the fields and try again."),
-  });
+  const toggleVote = (id: string) => {
+    const next = votedIds.includes(id) ? votedIds.filter((v) => v !== id) : [...votedIds, id];
+    setVotedIds(next);
+    saveVotedIds(next);
+  };
 
   const ranked = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const votes = requests.data?.votes ?? {};
-    return (requests.data?.requests ?? [])
+    return [...wishlist, ...localIdeas]
       .filter((r) =>
-        q ? [r.title, r.summary, r.rationale ?? "", r.category].join(" ").toLowerCase().includes(q) : true,
+        q
+          ? [r.title, r.summary, r.rationale ?? "", r.category].join(" ").toLowerCase().includes(q)
+          : true,
       )
-      .map((r) => ({ ...r, voteCount: votes[r.id] ?? 0 }))
+      .map((r) => ({ ...r, voteCount: r.votes + (votedIds.includes(r.id) ? 1 : 0) }))
       .sort((a, b) => b.voteCount - a.voteCount);
-  }, [requests.data, query]);
+  }, [query, localIdeas, votedIds]);
 
-  const votedIds = new Set(myVotes.data ?? []);
+  const submit = () => {
+    if (form.title.trim().length < 3 || form.summary.trim().length < 10) {
+      toast.error("Add a name and a slightly longer description.");
+      return;
+    }
+    const idea: WishlistIdea = {
+      id: `${slugify(form.title) || "panel-idea"}-${Math.random().toString(36).slice(2, 6)}`,
+      title: form.title.trim(),
+      summary: form.summary.trim(),
+      rationale: form.rationale.trim() || null,
+      category: form.category,
+      status: "requested",
+      author: form.author.trim() || "Anonymous",
+      votes: 0,
+    };
+    const next = [...localIdeas, idea];
+    setLocalIdeas(next);
+    saveLocalIdeas(next);
+    setForm({ title: "", summary: "", rationale: "", category: "other", author: "" });
+    setFormOpen(false);
+    toast.success("Thanks — your panel idea is on the wishlist.");
+  };
 
   return (
     <div>
@@ -134,11 +137,7 @@ function Wishlist() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              if (form.title.trim().length < 3 || form.summary.trim().length < 10) {
-                toast.error("Add a name and a slightly longer description.");
-                return;
-              }
-              create.mutate(form);
+              submit();
             }}
             className="mb-10 rounded-2xl border border-border bg-card p-6 shadow-soft"
           >
@@ -160,7 +159,7 @@ function Wishlist() {
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
                   className="mt-1.5 w-full rounded-xl border border-input bg-background px-3.5 py-2.5 text-sm outline-none focus:border-primary"
                 >
-                  {CATEGORIES.map((c) => (
+                  {wishlistCategories.map((c) => (
                     <option key={c} value={c}>
                       {c === "other" ? "Other" : c}
                     </option>
@@ -189,8 +188,8 @@ function Wishlist() {
               <label className="text-sm sm:col-span-1">
                 <span className="text-muted-foreground">Your name (optional)</span>
                 <input
-                  value={form.author_name}
-                  onChange={(e) => setForm({ ...form, author_name: e.target.value })}
+                  value={form.author}
+                  onChange={(e) => setForm({ ...form, author: e.target.value })}
                   placeholder="Anonymous"
                   className="mt-1.5 w-full rounded-xl border border-input bg-background px-3.5 py-2.5 text-sm outline-none focus:border-primary"
                 />
@@ -199,10 +198,9 @@ function Wishlist() {
             <div className="mt-5 flex gap-3">
               <button
                 type="submit"
-                disabled={create.isPending}
-                className="rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+                className="rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                {create.isPending ? "Adding…" : "Add to wishlist"}
+                Add to wishlist
               </button>
               <button
                 type="button"
@@ -217,7 +215,7 @@ function Wishlist() {
 
         <div className="space-y-4">
           {ranked.map((request) => {
-            const hasVoted = votedIds.has(request.id);
+            const hasVoted = votedIds.includes(request.id);
             return (
               <div
                 key={request.id}
@@ -225,9 +223,11 @@ function Wishlist() {
               >
                 <button
                   type="button"
-                  aria-label={hasVoted ? `Remove your vote for ${request.title}` : `Vote for ${request.title}`}
+                  aria-label={
+                    hasVoted ? `Remove your vote for ${request.title}` : `Vote for ${request.title}`
+                  }
                   aria-pressed={hasVoted}
-                  onClick={() => vote.mutate({ id: request.id, hasVoted })}
+                  onClick={() => toggleVote(request.id)}
                   className={
                     hasVoted
                       ? "flex h-16 w-14 shrink-0 flex-col items-center justify-center rounded-xl border border-primary bg-accent text-accent-foreground"
@@ -257,7 +257,7 @@ function Wishlist() {
                     </p>
                   )}
                   <p className="mt-3 text-xs text-muted-foreground">
-                    Suggested by {request.author_name ?? "Anonymous"}
+                    Suggested by {request.author}
                   </p>
                 </div>
               </div>
@@ -265,8 +265,7 @@ function Wishlist() {
           })}
         </div>
 
-        {requests.isLoading && <p className="text-sm text-muted-foreground">Loading ideas…</p>}
-        {!requests.isLoading && ranked.length === 0 && (
+        {ranked.length === 0 && (
           <p className="rounded-2xl border border-border bg-card p-10 text-center text-sm text-muted-foreground shadow-soft">
             Nothing matches that search yet — be the first to suggest it.
           </p>
