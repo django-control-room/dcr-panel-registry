@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, BookOpen, Check, Github, Package } from "lucide-react";
 
-import { panelsQuery } from "@/lib/registry";
+import { getPanel } from "@/data/panels";
 
 export const Route = createFileRoute("/panels/$slug")({
   head: ({ params }) => {
@@ -27,12 +26,7 @@ export const Route = createFileRoute("/panels/$slug")({
 
 function PanelDetail() {
   const { slug } = Route.useParams();
-  const panels = useQuery(panelsQuery);
-  const panel = panels.data?.find((p) => p.slug === slug);
-
-  if (panels.isLoading) {
-    return <p className="mx-auto max-w-4xl px-6 py-20 text-sm text-muted-foreground">Loading…</p>;
-  }
+  const panel = getPanel(slug);
 
   if (!panel) {
     return (
@@ -82,7 +76,7 @@ function PanelDetail() {
 
       <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-soft">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Install</p>
-        <code className="mt-2 block text-sm">{panel.install_cmd}</code>
+        <code className="mt-2 block text-sm">{panel.installCmd}</code>
       </div>
 
       <section className="mt-10">
@@ -100,11 +94,11 @@ function PanelDetail() {
       <dl className="mt-10 grid gap-5 rounded-2xl border border-border bg-card p-6 shadow-soft sm:grid-cols-3">
         <div>
           <dt className="text-xs uppercase tracking-wide text-muted-foreground">Maintainer</dt>
-          <dd className="mt-1 text-sm">{panel.maintainer ?? "Community"}</dd>
+          <dd className="mt-1 text-sm">{panel.maintainer}</dd>
         </div>
         <div>
           <dt className="text-xs uppercase tracking-wide text-muted-foreground">First release</dt>
-          <dd className="mt-1 text-sm">{panel.first_release ?? "—"}</dd>
+          <dd className="mt-1 text-sm">{panel.firstRelease}</dd>
         </div>
         <div>
           <dt className="text-xs uppercase tracking-wide text-muted-foreground">Package</dt>
@@ -113,9 +107,9 @@ function PanelDetail() {
       </dl>
 
       <div className="mt-8 flex flex-wrap gap-3">
-        {panel.github_url && (
+        {panel.github && (
           <a
-            href={panel.github_url}
+            href={panel.github}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
@@ -124,9 +118,9 @@ function PanelDetail() {
             Source code
           </a>
         )}
-        {panel.docs_url && (
+        {panel.docs && (
           <a
-            href={panel.docs_url}
+            href={panel.docs}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
