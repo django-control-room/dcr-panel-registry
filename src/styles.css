@@ -1,0 +1,146 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system borrowed from the Django Control Room main site:
+ * Django green primary, Space Grotesk headings, DM Sans body, soft shadows.
+ */
+
+@theme inline {
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-django: var(--django);
+  --color-django-soft: var(--django-soft);
+  --color-surface-elevated: var(--surface-elevated);
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.984 0.002 247.8);
+  --foreground: oklch(0.206 0.018 264.1);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.206 0.018 264.1);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.206 0.018 264.1);
+  --primary: oklch(0.589 0.125 157.9);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.945 0.005 247.9);
+  --secondary-foreground: oklch(0.206 0.018 264.1);
+  --muted: oklch(0.961 0.003 247.9);
+  --muted-foreground: oklch(0.549 0.026 264.3);
+  --accent: oklch(0.964 0.019 166.4);
+  --accent-foreground: oklch(0.467 0.097 158.3);
+  --destructive: oklch(0.636 0.208 25.4);
+  --destructive-foreground: oklch(0.984 0.002 247.8);
+  --border: oklch(0.92 0.009 255);
+  --input: oklch(0.92 0.009 255);
+  --ring: oklch(0.589 0.125 157.9);
+  --django: oklch(0.589 0.125 157.9);
+  --django-soft: oklch(0.964 0.019 166.4);
+  --surface-elevated: oklch(1 0 0);
+  --gradient-django: linear-gradient(135deg, oklch(0.517 0.108 158.1), oklch(0.66 0.141 157.7));
+}
+
+.dark {
+  --background: oklch(0.186 0.012 266.9);
+  --foreground: oklch(0.937 0.007 247.9);
+  --card: oklch(0.228 0.016 266.9);
+  --card-foreground: oklch(0.937 0.007 247.9);
+  --popover: oklch(0.228 0.016 266.9);
+  --popover-foreground: oklch(0.937 0.007 247.9);
+  --primary: oklch(0.647 0.133 158.4);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.292 0.017 264.3);
+  --secondary-foreground: oklch(0.937 0.007 247.9);
+  --muted: oklch(0.272 0.015 264.3);
+  --muted-foreground: oklch(0.636 0.024 264.4);
+  --accent: oklch(0.281 0.033 163.1);
+  --accent-foreground: oklch(0.825 0.092 163.4);
+  --destructive: oklch(0.561 0.195 26.2);
+  --destructive-foreground: oklch(0.984 0.002 247.8);
+  --border: oklch(0.292 0.017 264.3);
+  --input: oklch(0.292 0.017 264.3);
+  --ring: oklch(0.647 0.133 158.4);
+  --django: oklch(0.647 0.133 158.4);
+  --django-soft: oklch(0.281 0.033 163.1);
+  --surface-elevated: oklch(0.248 0.018 266.8);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+
+  code,
+  pre {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+  }
+}
+
+@utility text-gradient-django {
+  background-image: var(--gradient-django);
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-dot-pattern {
+  background-image: radial-gradient(color-mix(in oklab, var(--muted-foreground) 18%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+@utility shadow-soft {
+  box-shadow:
+    0 1px 3px color-mix(in oklab, var(--foreground) 4%, transparent),
+    0 8px 24px color-mix(in oklab, var(--foreground) 6%, transparent);
+}
+
+@utility shadow-hover {
+  box-shadow:
+    0 2px 8px color-mix(in oklab, var(--foreground) 6%, transparent),
+    0 12px 32px color-mix(in oklab, var(--foreground) 9%, transparent);
+}
