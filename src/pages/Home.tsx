@@ -1,31 +1,12 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowUpRight, Lightbulb, Package, Search } from "lucide-react";
 
+import Seo from "@/components/Seo";
 import { panels } from "@/data/panels";
 import { wishlist } from "@/data/wishlist";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Django Control Room Panel Registry — find and request admin panels" },
-      {
-        name: "description",
-        content:
-          "Search every Django Control Room panel, read what each one does, and see the panels the community still wants built.",
-      },
-      { property: "og:title", content: "Django Control Room Panel Registry" },
-      {
-        property: "og:description",
-        content:
-          "Search every Django Control Room panel, read what each one does, and see the panels the community still wants built.",
-      },
-    ],
-  }),
-  component: RegistryIndex,
-});
-
-function RegistryIndex() {
+export default function Home() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
 
@@ -49,6 +30,10 @@ function RegistryIndex() {
 
   return (
     <div>
+      <Seo
+        title="Django Control Room Panel Registry — find and request admin panels"
+        description="Search every Django Control Room panel, read what each one does, and see the panels the community still wants built."
+      />
       <section className="border-b border-border bg-dot-pattern">
         <div className="mx-auto max-w-4xl px-6 py-20 text-center md:py-28">
           <p className="mb-3 text-sm font-medium uppercase tracking-wide text-primary">
@@ -114,8 +99,7 @@ function RegistryIndex() {
           {results.map((panel) => (
             <Link
               key={panel.slug}
-              to="/panels/$slug"
-              params={{ slug: panel.slug }}
+              to={`/panels/${panel.slug}`}
               className="group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-hover"
             >
               <div className="mb-4 flex items-center justify-between">

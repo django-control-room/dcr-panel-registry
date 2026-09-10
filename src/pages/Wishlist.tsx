@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowUp, Plus, Search } from "lucide-react";
 import { toast } from "sonner";
 
+import Seo from "@/components/Seo";
 import {
   loadLocalIdeas,
   loadVotedIds,
@@ -15,27 +15,7 @@ import {
   type WishlistIdea,
 } from "@/data/wishlist";
 
-export const Route = createFileRoute("/wishlist")({
-  head: () => ({
-    meta: [
-      { title: "Panel wishlist — vote on Django admin panels that don't exist yet" },
-      {
-        name: "description",
-        content:
-          "See the Django admin panels the community wants next, upvote the ones you need, and suggest your own idea.",
-      },
-      { property: "og:title", content: "Panel wishlist — Django Control Room Panel Registry" },
-      {
-        property: "og:description",
-        content:
-          "See the Django admin panels the community wants next, upvote the ones you need, and suggest your own idea.",
-      },
-    ],
-  }),
-  component: Wishlist,
-});
-
-function Wishlist() {
+export default function Wishlist() {
   const [query, setQuery] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [localIdeas, setLocalIdeas] = useState<WishlistIdea[]>([]);
@@ -96,6 +76,10 @@ function Wishlist() {
 
   return (
     <div>
+      <Seo
+        title="Panel wishlist — vote on Django admin panels that don't exist yet"
+        description="See the Django admin panels the community wants next, upvote the ones you need, and suggest your own idea."
+      />
       <section className="border-b border-border bg-dot-pattern">
         <div className="mx-auto max-w-4xl px-6 py-16 text-center md:py-20">
           <p className="mb-3 text-sm font-medium uppercase tracking-wide text-primary">

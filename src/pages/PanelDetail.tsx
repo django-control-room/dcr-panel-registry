@@ -1,36 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, BookOpen, Check, Github, Package } from "lucide-react";
 
+import Seo from "@/components/Seo";
 import { getPanel } from "@/data/panels";
 
-export const Route = createFileRoute("/panels/$slug")({
-  head: ({ params }) => {
-    const name = params.slug;
-    return {
-      meta: [
-        { title: `${name} — Django Control Room Panel Registry` },
-        {
-          name: "description",
-          content: `What ${name} does, how to install it, and where to find its source and documentation.`,
-        },
-        { property: "og:title", content: `${name} — Panel Registry` },
-        {
-          property: "og:description",
-          content: `What ${name} does, how to install it, and where to find its source and documentation.`,
-        },
-      ],
-    };
-  },
-  component: PanelDetail,
-});
-
-function PanelDetail() {
-  const { slug } = Route.useParams();
-  const panel = getPanel(slug);
+export default function PanelDetail() {
+  const { slug } = useParams<{ slug: string }>();
+  const panel = slug ? getPanel(slug) : undefined;
 
   if (!panel) {
     return (
       <div className="mx-auto max-w-2xl px-6 py-24 text-center">
+        <Seo title="Panel not found — Django Control Room Panel Registry" />
         <h1 className="font-heading text-2xl font-bold">This panel isn&apos;t in the registry</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           It may have been renamed, or it may be an idea rather than a released panel.
@@ -47,6 +28,10 @@ function PanelDetail() {
 
   return (
     <article className="mx-auto max-w-4xl px-6 py-14">
+      <Seo
+        title={`${panel.name} — Django Control Room Panel Registry`}
+        description={`What ${panel.name} does, how to install it, and where to find its source and documentation.`}
+      />
       <Link
         to="/"
         className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"

@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, NavLink } from "react-router-dom";
 import { Github, Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -6,6 +6,11 @@ const MAIN_SITE = "https://djangocontrolroom.com/";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    isActive
+      ? "text-foreground font-medium transition-colors"
+      : "transition-colors hover:text-foreground";
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-lg">
@@ -18,12 +23,12 @@ export default function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
-          <Link to="/" activeOptions={{ exact: true }} className="transition-colors hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>
+          <NavLink to="/" end className={navLinkClass}>
             Registry
-          </Link>
-          <Link to="/wishlist" className="transition-colors hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>
+          </NavLink>
+          <NavLink to="/wishlist" className={navLinkClass}>
             Wishlist
-          </Link>
+          </NavLink>
           <a href={MAIN_SITE} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-foreground">
             Main site
           </a>
