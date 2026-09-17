@@ -1,11 +1,33 @@
 import { Link, NavLink } from "react-router-dom";
-import { Github, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Github, Menu, Moon, Sun, X } from "lucide-react";
+import { useLayoutEffect, useState } from "react";
+
+import { Button } from "@/components/ui/button";
 
 const MAIN_SITE = "https://djangocontrolroom.com/";
+const THEME_KEY = "dcr-panel-registry-theme";
+
+function getInitialTheme() {
+  if (typeof window === "undefined") return false;
+
+  const savedTheme = window.localStorage.getItem(THEME_KEY);
+  if (savedTheme === "dark") return true;
+  if (savedTheme === "light") return false;
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [isDark, setIsDark] = useState(getInitialTheme);
+
+  useLayoutEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+    window.localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+  }, [isDark]);
+
+  const toggleTheme = () => setIsDark((currentTheme) => !currentTheme);
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -38,6 +60,18 @@ export default function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            aria-pressed={isDark}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            className="text-muted-foreground hover:text-foreground"
+            onClick={toggleTheme}
+          >
+            {isDark ? <Sun /> : <Moon />}
+          </Button>
           <a
             href="https://github.com/django-control-room"
             target="_blank"
@@ -82,6 +116,17 @@ export default function SiteHeader() {
           <a href="https://github.com/django-control-room" className="block text-sm text-muted-foreground">
             GitHub
           </a>
+          <Button
+            type="button"
+            variant="ghost"
+            className="w-full justify-start px-0 text-muted-foreground hover:bg-transparent hover:text-foreground"
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            aria-pressed={isDark}
+            onClick={toggleTheme}
+          >
+            {isDark ? <Sun /> : <Moon />}
+            {isDark ? "Light mode" : "Dark mode"}
+          </Button>
         </div>
       )}
     </header>
