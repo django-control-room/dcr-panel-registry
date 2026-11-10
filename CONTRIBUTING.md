@@ -69,3 +69,9 @@ npm run build
 
 The build reads every file in `panels/` and stops with a message naming the file and field if
 something is wrong. The same check runs automatically on your pull request.
+
+## Hiding a panel (maintainers)
+
+To take a panel off the site without deleting its file, add its package name to `HIDDEN_PANELS` in
+`src/data/panels.ts`. A hidden panel gets no listing and no page, and its file isn't checked.
+Remove the name to bring it back.

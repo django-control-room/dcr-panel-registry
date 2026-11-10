@@ -17,6 +17,11 @@ export const CATEGORIES = [
   "Games",
 ] as const;
 
+// Panels hidden from the site without deleting their file: no listing, no page, and the file
+// isn't validated. Add the package name (the file name without .md) to hide one; remove it to
+// bring the panel back.
+export const HIDDEN_PANELS: string[] = [];
+
 const frontmatterSchema = z
   .object({
     label: z.string().min(1).max(30),
@@ -121,7 +126,11 @@ function parsePanelFileOrSkipInDev(path: string, raw: string): Panel[] {
 
 const panelFileEntries = Object.entries(panelFiles);
 
-export const panels: Panel[] = panelFileEntries
+const visiblePanelFileEntries = panelFileEntries.filter(
+  ([path]) => !HIDDEN_PANELS.includes(path.split("/").pop()!.replace(/\.md$/, "")),
+);
+
+export const panels: Panel[] = visiblePanelFileEntries
   .flatMap(([path, raw]) => parsePanelFileOrSkipInDev(path, raw))
   .sort((a, b) => a.name.localeCompare(b.name));
 
