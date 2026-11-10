@@ -7,6 +7,12 @@ export interface DownloadStats {
   previous30Days: number | null;
   allTime: number;
   asOf: string;
+  daily: DailyDownloads[];
+}
+
+export interface DailyDownloads {
+  date: string;
+  downloads: number;
 }
 
 // One request per package per page load, shared by every component that asks.
@@ -34,6 +40,7 @@ function fetchDownloadStatsForPackage(name: string) {
             previous30Days: rolling.previous?.complete ? rolling.previous.downloads : null,
             allTime: summary.recorded_downloads,
             asOf: rolling.as_of,
+            daily: Array.isArray(rolling.observations) ? rolling.observations : [],
           }
         : null,
     );
@@ -42,11 +49,12 @@ function fetchDownloadStatsForPackage(name: string) {
   return requests.get(name)!;
 }
 
-/** Download stats for a published package, or null while loading or if the package isn't tracked. */
+/** Download stats for a published package: undefined while loading, null if the package isn't tracked. */
 export function useDownloadStats(name: string) {
-  const [stats, setStats] = useState<DownloadStats | null>(null);
+  const [stats, setStats] = useState<DownloadStats | null | undefined>(undefined);
   useEffect(() => {
     let current = true;
+    setStats(undefined);
     fetchDownloadStatsForPackage(name).then((result) => current && setStats(result));
     return () => {
       current = false;

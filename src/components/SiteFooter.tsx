@@ -25,14 +25,6 @@ export default function SiteFooter() {
           >
             GitHub
           </a>
-          <a
-            href={`${MAIN_SITE}docs/`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-foreground"
-          >
-            Docs
-          </a>
         </div>
         <p className="text-xs text-muted-foreground">MIT License</p>
       </div>

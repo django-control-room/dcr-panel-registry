@@ -58,14 +58,6 @@ export default function SiteHeader() {
           >
             Main site
           </a>
-          <a
-            href={`${MAIN_SITE}docs/`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-foreground"
-          >
-            Docs
-          </a>
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
