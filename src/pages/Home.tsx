@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, GitPullRequest, Lightbulb, Search, X } from "lucide-react";
 
+import PanelCard from "@/components/PanelCard";
 import Seo from "@/components/Seo";
 import { panels, type Category } from "@/data/panels";
 import { wishlist } from "@/data/wishlist";
@@ -173,32 +174,7 @@ export default function Home() {
         {results.length > 0 ? (
           <div className="mt-4 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {results.map((panel) => (
-              <Link
-                key={panel.name}
-                to={`/panels/${panel.name}`}
-                className="group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-hover"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="min-w-0 break-words font-heading text-lg font-semibold">
-                    {panel.name}
-                  </h2>
-                  <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
-                </div>
-                <p className="mt-1 text-sm font-medium text-primary">{panel.tagline}</p>
-                <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {panel.description}
-                </p>
-                <div className="mt-5 flex flex-wrap items-center gap-1.5 border-t border-border pt-4">
-                  {panel.categories.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-full bg-secondary px-2.5 py-1 text-xs text-muted-foreground"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </Link>
+              <PanelCard key={panel.name} panel={panel} />
             ))}
           </div>
         ) : (

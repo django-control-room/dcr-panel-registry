@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import CopyButton from "@/components/CopyButton";
+import PanelCard from "@/components/PanelCard";
 import Seo from "@/components/Seo";
 import { getPanel, panels, type Panel } from "@/data/panels";
 import { statsPageUrl, useDownloadStats, type DailyDownloads } from "@/lib/stats";
@@ -374,19 +375,9 @@ export default function PanelDetail() {
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <div className="mt-6 grid gap-5 md:grid-cols-3">
+            <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {relatedPanels.map((related) => (
-                <Link
-                  key={related.name}
-                  to={`/panels/${related.name}`}
-                  className="group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-hover"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <h3 className="truncate font-heading font-semibold">{related.name}</h3>
-                    <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
-                  </div>
-                  <p className="mt-1.5 text-sm text-muted-foreground">{related.tagline}</p>
-                </Link>
+                <PanelCard key={related.name} panel={related} heading="h3" />
               ))}
             </div>
           </div>
