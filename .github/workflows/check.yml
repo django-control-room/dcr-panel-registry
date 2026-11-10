@@ -5,6 +5,10 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+  issues: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,3 +19,6 @@ jobs:
       - run: bun run lint
       # Validates every file in panels/ and prerenders the site.
       - run: bun run build
+        env:
+          # Read access to the wishlist issues; GitHub provides this token, nothing to configure.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

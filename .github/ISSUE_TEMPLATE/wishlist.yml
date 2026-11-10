@@ -1,0 +1,35 @@
+name: Panel idea
+description: Suggest a panel for the wishlist on panels.djangocontrolroom.com
+labels: ["wishlist"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use the panel's name as the title, for example `dj-migrations-panel`.
+
+        Ideas show up on the [wishlist](https://panels.djangocontrolroom.com/wishlist) after the next site build. Before opening a new one, search the existing ideas and add a 👍 to the one you want instead: 👍 reactions are the votes.
+  # The labels below are the headings the site reads; keep them in sync with wishlist-from-github.ts.
+  - type: textarea
+    attributes:
+      label: What should the panel do?
+      placeholder: Show every scheduled task with its next run time and last failure.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Why do you need it?
+      placeholder: What do you do today without it?
+  - type: dropdown
+    attributes:
+      label: Category
+      options:
+        - Background jobs
+        - Database
+        - Developer tooling
+        - Infrastructure
+        - Integrations
+        - Observability
+        - Performance
+        - Security
+        - Games
+        - Other
