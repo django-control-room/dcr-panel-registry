@@ -4,7 +4,7 @@ tagline: Redis monitoring, inside your admin
 categories:
   - Infrastructure
 repository: https://github.com/django-control-room/dj-redis-panel
-docs: https://django-control-room.github.io/dj-control-room/
+docs: https://django-control-room.github.io/dj-redis-panel/
 maintainer: Django Control Room
 first_release: 2024-11-01
 highlights:

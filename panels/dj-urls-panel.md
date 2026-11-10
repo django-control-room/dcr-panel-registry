@@ -4,7 +4,7 @@ tagline: Your URL map, at a glance
 categories:
   - Developer tooling
 repository: https://github.com/django-control-room/dj-urls-panel
-docs: https://django-control-room.github.io/dj-control-room/
+docs: https://django-control-room.github.io/dj-urls-panel/
 maintainer: Django Control Room
 first_release: 2025-05-20
 highlights:

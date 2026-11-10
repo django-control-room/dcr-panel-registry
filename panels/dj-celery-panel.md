@@ -4,7 +4,7 @@ tagline: Task queues, tamed
 categories:
   - Background jobs
 repository: https://github.com/django-control-room/dj-celery-panel
-docs: https://django-control-room.github.io/dj-control-room/
+docs: https://django-control-room.github.io/dj-celery-panel/
 maintainer: Django Control Room
 first_release: 2025-03-01
 highlights:

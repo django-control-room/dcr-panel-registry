@@ -4,7 +4,7 @@ tagline: Cache visibility, zero guesswork
 categories:
   - Performance
 repository: https://github.com/django-control-room/dj-cache-panel
-docs: https://django-control-room.github.io/dj-control-room/
+docs: https://django-control-room.github.io/dj-cache-panel/
 maintainer: Django Control Room
 first_release: 2025-01-15
 highlights:

@@ -4,7 +4,7 @@ tagline: Your signal landscape, fully mapped
 categories:
   - Developer tooling
 repository: https://github.com/django-control-room/dj-signals-panel
-docs: https://django-control-room.github.io/dj-control-room/
+docs: https://django-control-room.github.io/dj-signals-panel/
 maintainer: Django Control Room
 first_release: 2025-07-10
 highlights:
