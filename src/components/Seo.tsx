@@ -1,29 +1,18 @@
-import { useEffect } from "react";
+import { Head } from "vite-react-ssg";
 
 type SeoProps = {
   title: string;
   description?: string;
 };
 
-function setMeta(kind: "name" | "property", name: string, value: string) {
-  let el = document.head.querySelector<HTMLMetaElement>(`meta[${kind}="${name}"]`);
-  if (!el) {
-    el = document.createElement("meta");
-    el.setAttribute(kind, name);
-    document.head.appendChild(el);
-  }
-  el.setAttribute("content", value);
-}
-
+// Rendered into each page's static HTML at build time, so crawlers see it without running JS.
 export default function Seo({ title, description }: SeoProps) {
-  useEffect(() => {
-    document.title = title;
-    if (description) {
-      setMeta("name", "description", description);
-      setMeta("property", "og:title", title);
-      setMeta("property", "og:description", description);
-    }
-  }, [title, description]);
-
-  return null;
+  return (
+    <Head>
+      <title>{title}</title>
+      <meta property="og:title" content={title} />
+      {description && <meta name="description" content={description} />}
+      {description && <meta property="og:description" content={description} />}
+    </Head>
+  );
 }

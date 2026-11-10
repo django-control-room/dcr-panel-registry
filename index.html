@@ -6,11 +6,14 @@
     <meta name="author" content="Django Control Room" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="description"
-      content="Search every Django Control Room panel, read what each one does, and see the panels the community still wants built."
-    />
-    <title>Django Control Room Panel Registry</title>
+    <script>
+      try {
+        var saved = localStorage.getItem("dcr-panel-registry-theme");
+        var dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.style.colorScheme = dark ? "dark" : "light";
+      } catch (e) {}
+    </script>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

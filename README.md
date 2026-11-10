@@ -1,24 +1,62 @@
-# Panel Hub
+# Django Control Room Panel Registry
 
-as part of @project:93591144-6c46-447a-b0c4-b5e993ecb99b:"Django Admin Suite" I plan to ship a panel registry site where people can search existing panels, see information about them as well as look at panels that don't exist that others have suggested or want. This should borrow the same or similar design language from the main site but will be deployed as its own separate entity.
+This codebase powers [panels.djangocontrolroom.com](https://panels.djangocontrolroom.com), the directory
+of panels for [Django Control Room](https://djangocontrolroom.com).
 
-This project was built with [Lovable](https://lovable.dev).
+DCR panels are operational tools built right inside the Django admin. Any published tool using the DCR
+framework can have an entry in this repo and pull requests are welcome.
 
-## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/632ada69-0e0a-40a3-8a6d-669b01567cb2).
+## List your panel
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Every panel is one markdown file in [`panels/`](panels/). To add yours, open a pull request that
+adds a single file named after your PyPI package, for example `panels/dj-example-panel.md`:
 
-## Development
+```markdown
+---
+label: Example
+tagline: One line about what it does
+categories:
+  - Developer tooling
+repository: https://github.com/you/dj-example-panel
+docs: https://you.github.io/dj-example-panel/
+maintainer: Your name
+first_release: 2025-01-15
+highlights:
+  - A short point about what the panel gives you
+  - Another one
+---
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+A short description of your panel, in plain prose.
+```
+
+Your panel needs to be published on PyPI with public source code. Once the pull request is merged,
+it appears at `panels.djangocontrolroom.com/panels/<package-name>`.
+
+[CONTRIBUTING.md](CONTRIBUTING.md) lists every field, the categories and the rules. A check runs on
+each pull request and names any field that needs fixing.
+
+### Add live download stats (optional)
+
+Panel pages show PyPI download counts read from
+[stats.djangocontrolroom.com](https://stats.djangocontrolroom.com), which is built from the
+[dcr-stats](https://github.com/django-control-room/dcr-stats) repo. To get live stats on your panel's
+page, open a second small pull request there that adds your package name to the `packages` list in
+`pypi-tracker.toml`:
+
+```toml
+packages = [
+    # ...
+    "dj-example-panel",
+]
+```
+
+Until your package is tracked, your panel page simply shows no download stats.
+
+## Run it locally
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+npm install
+npm run dev     # development server
+npm run build   # checks every file in panels/ and builds the static site into dist/
 ```

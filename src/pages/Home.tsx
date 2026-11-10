@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, Lightbulb, Package, Search } from "lucide-react";
 
 import Seo from "@/components/Seo";
-import { panels } from "@/data/panels";
+import { panels, type Category } from "@/data/panels";
 import { wishlist } from "@/data/wishlist";
 
 export default function Home() {
@@ -11,17 +11,17 @@ export default function Home() {
   const [category, setCategory] = useState("All");
 
   const categories = useMemo(() => {
-    const set = new Set(panels.map((p) => p.category));
+    const set = new Set(panels.flatMap((p) => p.categories));
     return ["All", ...Array.from(set).sort()];
   }, []);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return panels.filter((p) => {
-      const matchesCategory = category === "All" || p.category === category;
+      const matchesCategory = category === "All" || p.categories.includes(category as Category);
       if (!matchesCategory) return false;
       if (!q) return true;
-      return [p.name, p.label, p.tagline, p.description, p.category, ...p.highlights]
+      return [p.name, p.label, p.tagline, p.description, ...p.categories, ...p.highlights]
         .join(" ")
         .toLowerCase()
         .includes(q);
@@ -98,17 +98,24 @@ export default function Home() {
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {results.map((panel) => (
             <Link
-              key={panel.slug}
-              to={`/panels/${panel.slug}`}
+              key={panel.name}
+              to={`/panels/${panel.name}`}
               className="group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-hover"
             >
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent">
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent">
                   <Package className="h-5 w-5 text-primary" />
                 </div>
-                <span className="rounded-full bg-secondary px-2.5 py-1 text-xs text-muted-foreground">
-                  {panel.category}
-                </span>
+                <div className="flex flex-wrap justify-end gap-1.5">
+                  {panel.categories.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full bg-secondary px-2.5 py-1 text-xs text-muted-foreground"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
               <h3 className="font-heading text-lg font-semibold">{panel.name}</h3>
               <p className="mt-1 text-sm font-medium text-primary">{panel.tagline}</p>
@@ -116,7 +123,7 @@ export default function Home() {
                 {panel.description}
               </p>
               <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-                <code className="text-xs text-muted-foreground">{panel.installCmd}</code>
+                <code className="text-xs text-muted-foreground">pip install {panel.name}</code>
                 <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" />
               </div>
             </Link>
@@ -127,8 +134,8 @@ export default function Home() {
           <div className="rounded-2xl border border-border bg-card p-10 text-center shadow-soft">
             <h3 className="font-heading text-lg font-semibold">No panel matches that search</h3>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-              Maybe it doesn&apos;t exist yet. Check the wishlist, or suggest it — the most requested
-              ideas get built first.
+              Maybe it doesn&apos;t exist yet. Check the wishlist, or suggest it — the most
+              requested ideas get built first.
             </p>
             <Link
               to="/wishlist"

@@ -1,12 +1,60 @@
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, BookOpen, Check, Github, Package } from "lucide-react";
+import { ArrowLeft, BarChart3, BookOpen, Check, Code2, Package } from "lucide-react";
 
 import Seo from "@/components/Seo";
 import { getPanel } from "@/data/panels";
+import { useDownloadStats, statsPageUrl } from "@/lib/stats";
+
+function DownloadStatsCard({ name }: { name: string }) {
+  const stats = useDownloadStats(name);
+  if (!stats) return null;
+  const change = stats.previous30Days
+    ? Math.round(((stats.last30Days - stats.previous30Days) / stats.previous30Days) * 100)
+    : null;
+  return (
+    <div className="mt-4 rounded-2xl border border-border bg-card p-6 shadow-soft">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Downloads
+        </p>
+        <a
+          href={statsPageUrl(name)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+        >
+          <BarChart3 className="h-3.5 w-3.5" />
+          Full stats
+        </a>
+      </div>
+      <dl className="mt-3 grid gap-4 sm:grid-cols-2">
+        <div>
+          <dt className="text-xs text-muted-foreground">Last 30 days</dt>
+          <dd className="mt-1 text-2xl font-semibold tabular-nums">
+            {stats.last30Days.toLocaleString()}
+            {change !== null && (
+              <span className="ml-2 text-sm font-normal text-muted-foreground">
+                {change >= 0 ? "+" : ""}
+                {change}% vs prior 30
+              </span>
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt className="text-xs text-muted-foreground">Since tracking began</dt>
+          <dd className="mt-1 text-2xl font-semibold tabular-nums">
+            {stats.allTime.toLocaleString()}
+          </dd>
+        </div>
+      </dl>
+      <p className="mt-3 text-xs text-muted-foreground">PyPI data as of {stats.asOf}</p>
+    </div>
+  );
+}
 
 export default function PanelDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const panel = slug ? getPanel(slug) : undefined;
+  const { name } = useParams<{ name: string }>();
+  const panel = name ? getPanel(name) : undefined;
 
   if (!panel) {
     return (
@@ -26,11 +74,13 @@ export default function PanelDetail() {
     );
   }
 
+  const descriptionParagraphs = panel.description.split(/\n\s*\n/);
+
   return (
     <article className="mx-auto max-w-4xl px-6 py-14">
       <Seo
         title={`${panel.name} — Django Control Room Panel Registry`}
-        description={`What ${panel.name} does, how to install it, and where to find its source and documentation.`}
+        description={`${panel.tagline}. ${panel.label} panel for Django Control Room: what it does, how to install it, and where to find its source.`}
       />
       <Link
         to="/"
@@ -49,20 +99,32 @@ export default function PanelDetail() {
             <h1 className="font-heading text-3xl font-bold tracking-tight md:text-4xl">
               {panel.name}
             </h1>
-            <span className="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">
-              {panel.category}
-            </span>
+            {panel.categories.map((item) => (
+              <span
+                key={item}
+                className="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground"
+              >
+                {item}
+              </span>
+            ))}
           </div>
           <p className="mt-2 text-lg font-medium text-primary">{panel.tagline}</p>
         </div>
       </header>
 
-      <p className="mt-8 text-base leading-relaxed text-muted-foreground">{panel.description}</p>
+      {/* shortcut: blank-line paragraphs only, no markdown rendering; add a markdown renderer if authors need links or lists */}
+      <div className="mt-8 space-y-4 text-base leading-relaxed text-muted-foreground">
+        {descriptionParagraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+      </div>
 
       <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-soft">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Install</p>
-        <code className="mt-2 block text-sm">{panel.installCmd}</code>
+        <code className="mt-2 block text-sm">pip install {panel.name}</code>
       </div>
+
+      <DownloadStatsCard name={panel.name} />
 
       <section className="mt-10">
         <h2 className="font-heading text-xl font-semibold">What you get</h2>
@@ -92,14 +154,14 @@ export default function PanelDetail() {
       </dl>
 
       <div className="mt-8 flex flex-wrap gap-3">
-        {panel.github && (
+        {panel.repository && (
           <a
-            href={panel.github}
+            href={panel.repository}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            <Github className="h-4 w-4" />
+            <Code2 className="h-4 w-4" />
             Source code
           </a>
         )}

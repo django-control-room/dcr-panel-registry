@@ -1,33 +1,32 @@
 import { Link, NavLink } from "react-router-dom";
 import { Github, Menu, Moon, Sun, X } from "lucide-react";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
 const MAIN_SITE = "https://djangocontrolroom.com/";
 const THEME_KEY = "dcr-panel-registry-theme";
 
-function getInitialTheme() {
-  if (typeof window === "undefined") return false;
-
-  const savedTheme = window.localStorage.getItem(THEME_KEY);
-  if (savedTheme === "dark") return true;
-  if (savedTheme === "light") return false;
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const [isDark, setIsDark] = useState(getInitialTheme);
+  // The inline script in index.html applies the saved theme before paint; this mirrors it after hydration.
+  const [isDark, setIsDark] = useState(false);
 
-  useLayoutEffect(() => {
-    document.documentElement.classList.toggle("dark", isDark);
-    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
-    window.localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
-  }, [isDark]);
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains("dark"));
+  }, []);
 
-  const toggleTheme = () => setIsDark((currentTheme) => !currentTheme);
+  const toggleTheme = () => {
+    const nextIsDark = !isDark;
+    setIsDark(nextIsDark);
+    document.documentElement.classList.toggle("dark", nextIsDark);
+    document.documentElement.style.colorScheme = nextIsDark ? "dark" : "light";
+    try {
+      window.localStorage.setItem(THEME_KEY, nextIsDark ? "dark" : "light");
+    } catch {
+      // Storage can be blocked; the theme still applies for this visit.
+    }
+  };
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     isActive
@@ -51,10 +50,20 @@ export default function SiteHeader() {
           <NavLink to="/wishlist" className={navLinkClass}>
             Wishlist
           </NavLink>
-          <a href={MAIN_SITE} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-foreground">
+          <a
+            href={MAIN_SITE}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
             Main site
           </a>
-          <a href={`${MAIN_SITE}docs/`} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-foreground">
+          <a
+            href={`${MAIN_SITE}docs/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
             Docs
           </a>
         </nav>
@@ -101,10 +110,18 @@ export default function SiteHeader() {
 
       {open && (
         <div className="space-y-3 border-t border-border bg-background px-6 py-4 md:hidden">
-          <Link to="/" className="block text-sm text-muted-foreground" onClick={() => setOpen(false)}>
+          <Link
+            to="/"
+            className="block text-sm text-muted-foreground"
+            onClick={() => setOpen(false)}
+          >
             Registry
           </Link>
-          <Link to="/wishlist" className="block text-sm text-muted-foreground" onClick={() => setOpen(false)}>
+          <Link
+            to="/wishlist"
+            className="block text-sm text-muted-foreground"
+            onClick={() => setOpen(false)}
+          >
             Wishlist
           </Link>
           <a href={MAIN_SITE} className="block text-sm text-muted-foreground">
@@ -113,7 +130,10 @@ export default function SiteHeader() {
           <a href={`${MAIN_SITE}docs/`} className="block text-sm text-muted-foreground">
             Docs
           </a>
-          <a href="https://github.com/django-control-room" className="block text-sm text-muted-foreground">
+          <a
+            href="https://github.com/django-control-room"
+            className="block text-sm text-muted-foreground"
+          >
             GitHub
           </a>
           <Button

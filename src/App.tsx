@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import type { RouteRecord } from "vite-react-ssg";
 
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -8,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Home from "@/pages/Home";
 import Wishlist from "@/pages/Wishlist";
 import PanelDetail from "@/pages/PanelDetail";
+import { panels } from "@/data/panels";
 import NotFound from "@/pages/NotFound";
 
 function ScrollToTop() {
@@ -21,6 +23,7 @@ function ScrollToTop() {
 function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollToTop />
       <SiteHeader />
       <main className="flex-1">
         <Outlet />
@@ -31,18 +34,19 @@ function Layout() {
   );
 }
 
-export default function App() {
-  return (
-    <>
-      <ScrollToTop />
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/panels/:slug" element={<PanelDetail />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </>
-  );
-}
+export const routes: RouteRecord[] = [
+  {
+    element: <Layout />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/wishlist", element: <Wishlist /> },
+      {
+        path: "/panels/:name",
+        element: <PanelDetail />,
+        // One prerendered HTML page per file in /panels.
+        getStaticPaths: () => panels.map((panel) => `/panels/${panel.name}`),
+      },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+];
