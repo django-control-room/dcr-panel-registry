@@ -3,6 +3,9 @@
 Every panel in the registry is a single markdown file in [`panels/`](panels/). To list your
 panel, open a pull request that adds one file. Nothing else in the repository needs to change.
 
+Stuck, or want feedback before you open the pull request? Ask in the
+[Django Control Room Discord](https://discord.gg/aJgys9TFvA).
+
 ## 1. Before you submit
 
 - Your panel is published on PyPI and installs with `pip install <your-package>`.

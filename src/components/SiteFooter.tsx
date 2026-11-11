@@ -1,3 +1,5 @@
+import { DISCORD_URL } from "@/lib/links";
+
 const MAIN_SITE = "https://djangocontrolroom.com/";
 
 export default function SiteFooter() {
@@ -24,6 +26,9 @@ export default function SiteFooter() {
             className="transition-colors hover:text-foreground"
           >
             GitHub
+          </a>
+          <a href={DISCORD_URL} className="transition-colors hover:text-foreground">
+            Discord
           </a>
         </div>
         <p className="text-xs text-muted-foreground">MIT License</p>

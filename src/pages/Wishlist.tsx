@@ -4,6 +4,7 @@ import wishlist from "virtual:wishlist";
 
 import Seo from "@/components/Seo";
 import { statusLabels, SUGGEST_IDEA_URL } from "@/data/wishlist";
+import { DISCORD_URL } from "@/lib/links";
 
 export default function Wishlist() {
   const [query, setQuery] = useState("");
@@ -127,6 +128,19 @@ export default function Wishlist() {
               : "Nothing matches that search yet. Be the first to suggest it."}
           </p>
         )}
+
+        <p className="mt-10 text-center text-sm text-muted-foreground">
+          Want to build one of these?{" "}
+          <a
+            href={DISCORD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-primary hover:underline"
+          >
+            Talk it through on Discord
+          </a>
+          .
+        </p>
       </section>
     </div>
   );
