@@ -235,7 +235,9 @@ export default function Home() {
             </span>
             <span>
               <span className="flex items-center gap-1.5 font-heading text-lg font-semibold">
-                {wishlist.length} panels people want
+                {wishlist.length === 0
+                  ? "Panels people want"
+                  : `${wishlist.length} ${wishlist.length === 1 ? "panel" : "panels"} people want`}
                 <ArrowRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
               </span>
               <span className="mt-1 block text-sm text-muted-foreground">
