@@ -5,7 +5,7 @@ import { ArrowRight, ArrowUpRight, GitPullRequest, Lightbulb, Search, X } from "
 import PanelCard from "@/components/PanelCard";
 import Seo from "@/components/Seo";
 import { panels, type Category } from "@/data/panels";
-import { wishlist } from "@/data/wishlist";
+import wishlist from "virtual:wishlist";
 
 const ALL = "All";
 const CONTRIBUTING_URL =
