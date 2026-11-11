@@ -13,21 +13,23 @@ export default function SiteFooter() {
           <span className="font-heading text-sm font-semibold">Panel Registry</span>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-          <a
-            href={MAIN_SITE}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-foreground"
-          >
+          <a href={MAIN_SITE} className="transition-colors hover:text-foreground">
             Django Control Room
           </a>
           <a
             href="https://github.com/django-control-room"
+            target="_blank"
+            rel="noopener noreferrer"
             className="transition-colors hover:text-foreground"
           >
             GitHub
           </a>
-          <a href={DISCORD_URL} className="transition-colors hover:text-foreground">
+          <a
+            href={DISCORD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
             Discord
           </a>
         </div>

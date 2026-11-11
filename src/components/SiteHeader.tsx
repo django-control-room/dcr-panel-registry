@@ -50,12 +50,7 @@ export default function SiteHeader() {
           <NavLink to="/wishlist" className={navLinkClass}>
             Wishlist
           </NavLink>
-          <a
-            href={MAIN_SITE}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-foreground"
-          >
+          <a href={MAIN_SITE} className="transition-colors hover:text-foreground">
             Main site
           </a>
         </nav>
@@ -118,6 +113,8 @@ export default function SiteHeader() {
           </a>
           <a
             href="https://github.com/django-control-room"
+            target="_blank"
+            rel="noopener noreferrer"
             className="block text-sm text-muted-foreground"
           >
             GitHub
