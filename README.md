@@ -1,6 +1,6 @@
 # Django Control Room Panel Registry
 
-This codebase powers [panels.djangocontrolroom.com](https://panels.djangocontrolroom.com), the directory
+This codebase powers [djangocontrolroom.com/panels](https://djangocontrolroom.com/panels/), the directory
 of panels for [Django Control Room](https://djangocontrolroom.com).
 
 DCR panels are operational tools built right inside the Django admin. Any published tool using the DCR
@@ -30,7 +30,7 @@ A short description of your panel, in plain prose.
 ```
 
 Your panel needs to be published on PyPI with public source code. Once the pull request is merged,
-it appears at `panels.djangocontrolroom.com/panels/<package-name>`.
+it appears at `djangocontrolroom.com/panels/<package-name>`.
 
 [CONTRIBUTING.md](CONTRIBUTING.md) lists every field, the categories and the rules. A check runs on
 each pull request and names any field that needs fixing.

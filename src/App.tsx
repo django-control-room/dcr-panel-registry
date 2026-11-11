@@ -41,10 +41,10 @@ export const routes: RouteRecord[] = [
       { path: "/", element: <Home /> },
       { path: "/wishlist", element: <Wishlist /> },
       {
-        path: "/panels/:name",
+        path: "/:name",
         element: <PanelDetail />,
         // One prerendered HTML page per file in /panels.
-        getStaticPaths: () => panels.map((panel) => `/panels/${panel.name}`),
+        getStaticPaths: () => panels.map((panel) => `/${panel.name}`),
       },
       { path: "*", element: <NotFound /> },
     ],

@@ -1,12 +1,16 @@
 # Agent instructions
 
 The panel directory for Django Control Room at
-[panels.djangocontrolroom.com](https://panels.djangocontrolroom.com), part of the
+[djangocontrolroom.com/panels](https://djangocontrolroom.com/panels/), part of the
 [djangocontrolroom.com](https://djangocontrolroom.com) family of sites.
 
 ## Static site, no backend
 
 - Hosted on Cloudflare Pages as static HTML. Don't add a server, API, database, auth or functions.
+- Served under `djangocontrolroom.com/panels/` by a Cloudflare Worker that strips the prefix. The
+  Vite `base` is `/panels/` and the router basename follows `import.meta.env.BASE_URL`, so use
+  `Link`/`NavLink` with root paths (`/wishlist`, `/<panel>`) and never hardcode `/panels/` or a
+  bare `/file` URL. Reference `public/` files through `import.meta.env.BASE_URL`.
 - Content is resolved at build time:
   - panels come from `panels/`;
   - wishlist ideas come from GitHub issues, via `wishlist-from-github.ts`.

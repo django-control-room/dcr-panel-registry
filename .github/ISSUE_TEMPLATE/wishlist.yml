@@ -1,5 +1,5 @@
 name: Panel idea
-description: Suggest a panel for the wishlist on panels.djangocontrolroom.com
+description: Suggest a panel for the wishlist on djangocontrolroom.com/panels
 labels: ["wishlist"]
 body:
   - type: markdown
@@ -7,7 +7,7 @@ body:
       value: |
         Use the panel's name as the title, for example `dj-migrations-panel`.
 
-        Ideas show up on the [wishlist](https://panels.djangocontrolroom.com/wishlist) after the next site build. Before opening a new one, search the existing ideas and add a 👍 to the one you want instead: 👍 reactions are the votes.
+        Ideas show up on the [wishlist](https://djangocontrolroom.com/panels/wishlist) after the next site build. Before opening a new one, search the existing ideas and add a 👍 to the one you want instead: 👍 reactions are the votes.
   # The labels below are the headings the site reads; keep them in sync with wishlist-from-github.ts.
   - type: textarea
     attributes:
