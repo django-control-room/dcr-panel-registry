@@ -86,5 +86,38 @@
     "author": "yassi",
     "votes": 0,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/8"
+  },
+  {
+    "number": 9,
+    "title": "dj-migrations-panel",
+    "summary": "See migration state, history. ability to rollback to specific migration (Danger!) and the ability to author manual migration files when needed.",
+    "rationale": "Deploys go wrong when nobody knows which migrations already ran on staging versus production. Also sometimes developers need to make their own migration files, there is space for a tool that could facilitate that.",
+    "category": "Database",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/9"
+  },
+  {
+    "number": 10,
+    "title": "dj-mail-panel",
+    "summary": "Inspect outgoing email: rendered previews, delivery attempts, bounces, and a replay button.",
+    "rationale": "Debugging transactional email currently means digging through provider dashboards.",
+    "category": "Integrations",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/10"
+  },
+  {
+    "number": 11,
+    "title": "dj-settings-panel",
+    "summary": "Introspection for settings through the admin. Possibly add ways to change settings live (needs discussion)",
+    "rationale": "Facilitate looking up settings without having to look through a possibly very large settings file.",
+    "category": "Developer tooling",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/11"
   }
 ]
