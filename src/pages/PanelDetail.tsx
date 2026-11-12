@@ -259,6 +259,7 @@ export default function PanelDetail() {
       <Seo
         title={`${panel.name} — Django Control Room Panel Registry`}
         description={`${panel.tagline}. ${panel.label} panel for Django Control Room: what it does, how to install it, and where to find its source.`}
+        image={panel.screenshot?.url}
       />
 
       <header className="relative overflow-hidden border-b border-border">
@@ -329,6 +330,27 @@ export default function PanelDetail() {
 
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-14">
         <div className="min-w-0">
+          {panel.screenshot && (
+            <a
+              href={panel.screenshot.url}
+              className="mb-12 block overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-shadow hover:shadow-hover"
+            >
+              <div
+                className="flex items-center gap-1.5 border-b border-border bg-secondary/60 px-4 py-2.5"
+                aria-hidden="true"
+              >
+                <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
+                <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
+                <span className="h-2.5 w-2.5 rounded-full bg-foreground/15" />
+              </div>
+              <img
+                src={panel.screenshot.url}
+                alt={panel.screenshot.alt}
+                decoding="async"
+                className="aspect-[16/10] w-full object-cover object-top"
+              />
+            </a>
+          )}
           <section>
             <h2 className="font-heading text-2xl font-semibold tracking-tight">About</h2>
             <div className="mt-4 space-y-4 text-base leading-relaxed text-foreground/80 md:text-lg">

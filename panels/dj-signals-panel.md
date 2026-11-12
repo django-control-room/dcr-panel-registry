@@ -7,6 +7,9 @@ repository: https://github.com/django-control-room/dj-signals-panel
 docs: https://django-control-room.github.io/dj-signals-panel/
 maintainer: Django Control Room
 first_release: 2025-04-01
+screenshot:
+  file: dj-signals-panel.webp
+  alt: The signals list with counts of signals and receivers and a search box
 highlights:
   - Complete overview of all registered signals
   - Receiver mapping with source module details

@@ -7,6 +7,9 @@ repository: https://github.com/django-control-room/dj-celery-panel
 docs: https://django-control-room.github.io/dj-celery-panel/
 maintainer: Django Control Room
 first_release: 2025-12-19
+screenshot:
+  file: dj-celery-panel.webp
+  alt: The Celery overview with registered tasks, periodic tasks, broker and result backend
 highlights:
   - Real-time worker and queue status overview
   - Task history with failure details and retries

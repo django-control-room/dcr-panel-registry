@@ -7,6 +7,9 @@ repository: https://github.com/django-control-room/dj-doom-panel
 docs: https://django-control-room.github.io/dj-doom-panel/
 maintainer: Django Control Room
 first_release: 2026-06-22
+screenshot:
+  file: dj-doom-panel.webp
+  alt: Doom running inside the Django admin
 highlights:
   - Doom
 ---

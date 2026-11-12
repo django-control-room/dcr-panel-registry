@@ -7,6 +7,9 @@ repository: https://github.com/django-control-room/dj-urls-panel
 docs: https://django-control-room.github.io/dj-urls-panel/
 maintainer: Django Control Room
 first_release: 2026-02-03
+screenshot:
+  file: dj-urls-panel.webp
+  alt: The URL list with totals, a search box and each pattern's namespace
 highlights:
   - Full URL pattern tree with namespace grouping
   - Reverse lookup and search across all routes

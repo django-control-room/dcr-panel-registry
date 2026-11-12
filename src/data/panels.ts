@@ -22,6 +22,10 @@ const frontmatterSchema = z
     maintainer: z.string().min(1),
     first_release: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "must be a date written as YYYY-MM-DD"),
     highlights: z.array(z.string().min(1)).min(1).max(6),
+    screenshot: z
+      .object({ file: z.string().min(1), alt: z.string().min(1).max(200) })
+      .strict()
+      .optional(),
   })
   .strict();
 
@@ -49,7 +53,18 @@ export interface Panel {
   highlights: string[];
   maintainer: string;
   firstRelease: string;
+  /** From panels/screenshots/; url is the built, base-aware address. */
+  screenshot: { url: string; alt: string } | null;
 }
+
+// Screenshots live in panels/screenshots/, named after the package. Vite gives each a hashed URL.
+// Size and file type are checked when building, in vite.config.ts.
+const screenshotFiles = import.meta.glob<string>("/panels/screenshots/*.{png,jpg,webp}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+const SCREENSHOT_EXTENSIONS = ["png", "jpg", "webp"];
 
 // PyPI normalized names: lowercase letters, digits and single hyphens.
 const PACKAGE_NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -67,7 +82,14 @@ export function parsePanelFile(fileName: string, raw: string): Panel {
   if (!match) fail("the file must start with a frontmatter block between two --- lines");
   const [, frontmatter = "", body = ""] = match!;
 
-  const result = frontmatterSchema.safeParse(parseYaml(frontmatter));
+  let yaml: unknown;
+  try {
+    yaml = parseYaml(frontmatter);
+  } catch (error) {
+    // Usually an unquoted value containing ": ". Quote the value to fix it.
+    fail(`the frontmatter isn't valid YAML: ${(error as Error).message}`);
+  }
+  const result = frontmatterSchema.safeParse(yaml);
   if (!result.success) {
     const problems = result.error.issues.map(
       (issue) => `  - ${issue.path.join(".") || "frontmatter"}: ${issue.message}`,
@@ -78,6 +100,18 @@ export function parsePanelFile(fileName: string, raw: string): Panel {
   if (!description) fail("add a description of the panel below the frontmatter");
 
   const data = result.data!;
+  let screenshot: Panel["screenshot"] = null;
+  if (data.screenshot) {
+    const { file, alt } = data.screenshot;
+    const allowedNames = SCREENSHOT_EXTENSIONS.map((extension) => `${name}.${extension}`);
+    if (!allowedNames.includes(file)) {
+      fail(`screenshot.file must be named after the package: ${allowedNames.join(", ")}`);
+    }
+    const url = screenshotFiles[`/panels/screenshots/${file}`];
+    if (!url) fail(`screenshot.file: panels/screenshots/${file} doesn't exist`);
+    screenshot = { url: url!, alt };
+  }
+
   return {
     name,
     label: data.label,
@@ -89,6 +123,7 @@ export function parsePanelFile(fileName: string, raw: string): Panel {
     highlights: data.highlights,
     maintainer: data.maintainer,
     firstRelease: data.first_release,
+    screenshot,
   };
 }
 
@@ -119,6 +154,26 @@ const visiblePanelFileEntries = panelFileEntries.filter(
 export const panels: Panel[] = visiblePanelFileEntries
   .flatMap(([path, raw]) => parsePanelFileOrSkipInDev(path, raw))
   .sort((a, b) => a.name.localeCompare(b.name));
+
+// A screenshot no panel uses was misnamed, or left behind. Hidden panels keep theirs.
+const usedScreenshotUrls = panels.flatMap((panel) =>
+  panel.screenshot ? [panel.screenshot.url] : [],
+);
+const screenshotEntries = Object.entries(screenshotFiles);
+const unusedScreenshots = screenshotEntries
+  .filter(([path, url]) => {
+    const panelName = path
+      .split("/")
+      .pop()!
+      .replace(/\.\w+$/, "");
+    return !usedScreenshotUrls.includes(url) && !HIDDEN_PANELS.includes(panelName);
+  })
+  .map(([path]) => path.slice(1));
+if (unusedScreenshots.length > 0) {
+  const message = `screenshots no panel uses (set screenshot.file, or delete them): ${unusedScreenshots.join(", ")}`;
+  if (!import.meta.env.DEV) throw new Error(message);
+  console.error(message);
+}
 
 export function getPanel(name: string) {
   return panels.find((panel) => panel.name === name);

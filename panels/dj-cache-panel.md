@@ -7,6 +7,9 @@ repository: https://github.com/django-control-room/dj-cache-panel
 docs: https://django-control-room.github.io/dj-cache-panel/
 maintainer: Django Control Room
 first_release: 2025-12-09
+screenshot:
+  file: dj-cache-panel.webp
+  alt: The cache instances page, listing each configured backend and what it supports
 highlights:
   - Browse configured cache instances and their capabilities
   - Search and browse keys for backends that support it

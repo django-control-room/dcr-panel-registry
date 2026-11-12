@@ -50,12 +50,27 @@ paragraphs with a blank line.
 | `maintainer`    | yes      | Person or organization that maintains the panel.             |
 | `first_release` | yes      | Date of the first PyPI release, written `YYYY-MM-DD`.        |
 | `highlights`    | yes      | 1 to 6 short bullet points about what the panel gives you.   |
+| `screenshot`    | no       | A screenshot of the panel; see below.                        |
 | _(body)_        | yes      | The description, written below the closing `---`.            |
 
 **Categories:** Background jobs, Database, Developer tooling, Games, Infrastructure, Integrations,
 Observability, Performance, Security. Case doesn't matter. A category not on this list is ignored
 rather than rejected; a panel with no listed category still appears under "All". If none fits,
 say so in your pull request.
+
+**Screenshot (optional):** add one image of your panel in use to `panels/screenshots/`, named
+after your package (`dj-redis-panel.png`, `.jpg` or `.webp`), and point to it with alt text that
+describes what it shows:
+
+```yaml
+screenshot:
+  file: dj-redis-panel.webp
+  alt: The Redis key browser showing keys filtered by prefix
+```
+
+Keep it under 500 KB; around 1600×1000 pixels works well, since the page shows it at 16:10 and
+crops the bottom of taller images. Use demo data, not anything private. The screenshot also
+becomes the preview image when someone shares your panel's page.
 
 Download counts are not part of the file. The site reads them from
 [stats.djangocontrolroom.com](https://stats.djangocontrolroom.com) once your package is tracked
@@ -70,7 +85,7 @@ npm install
 npm run build
 ```
 
-The build reads every file in `panels/` and stops with a message naming the file and field if
+The build reads every file in `panels/` (and `panels/screenshots/`) and stops with a message naming the file and field if
 something is wrong. The same check runs automatically on your pull request.
 
 ## Hiding a panel (maintainers)

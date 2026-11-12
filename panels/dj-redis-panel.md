@@ -7,6 +7,9 @@ repository: https://github.com/django-control-room/dj-redis-panel
 docs: https://django-control-room.github.io/dj-redis-panel/
 maintainer: Django Control Room
 first_release: 2025-08-11
+screenshot:
+  file: dj-redis-panel.webp
+  alt: A Redis instance overview with server stats and key counts per database
 highlights:
   - Live key browser with search and filtering
   - Memory and connection stats at a glance
