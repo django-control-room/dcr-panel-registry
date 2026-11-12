@@ -11,6 +11,17 @@
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/1"
   },
   {
+    "number": 11,
+    "title": "dj-settings-panel",
+    "summary": "Introspection for settings through the admin. Possibly add ways to change settings live (needs discussion)",
+    "rationale": "Facilitate looking up settings without having to look through a possibly very large settings file.",
+    "category": "Developer tooling",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 1,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/11"
+  },
+  {
     "number": 2,
     "title": "django-huey support",
     "summary": "Support for huey for managing workers and tasks, similar to what is available in dj-celery-panel",
@@ -110,14 +121,14 @@
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/10"
   },
   {
-    "number": 11,
-    "title": "dj-settings-panel",
-    "summary": "Introspection for settings through the admin. Possibly add ways to change settings live (needs discussion)",
-    "rationale": "Facilitate looking up settings without having to look through a possibly very large settings file.",
-    "category": "Developer tooling",
+    "number": 12,
+    "title": "feature flags",
+    "summary": "A better experience for feature flags. There are existing packages (e.g. waffle) that provide feature flag support  and a UI experience that uses the default admin changelist view that all models use traditionally. There is an opportunity to create a better UI/UX experience while leveraging existing feature flag tools as the engine.",
+    "rationale": "Better experience for feature flags beyond the default admin experience.",
+    "category": "Infrastructure",
     "status": "requested",
     "author": "yassi",
     "votes": 0,
-    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/11"
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/12"
   }
 ]
