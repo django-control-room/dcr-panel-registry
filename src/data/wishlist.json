@@ -64,5 +64,27 @@
     "author": "yassi",
     "votes": 0,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/6"
+  },
+  {
+    "number": 7,
+    "title": "s3 panel",
+    "summary": "Tool for browsing s3 buckets via the Django admin.",
+    "rationale": "Decrease the need to leave the Django admin to perform a basic task like looking up a file or image in the AWS s3 browser UI.",
+    "category": "Infrastructure",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/7"
+  },
+  {
+    "number": 8,
+    "title": "dj-storage-panel",
+    "summary": "Browse configured storage backends, list buckets and files, and spot orphaned uploads.",
+    "rationale": "Media files drift from database records and nobody notices for months.",
+    "category": "Infrastructure",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/8"
   }
 ]
