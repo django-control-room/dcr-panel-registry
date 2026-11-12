@@ -3,7 +3,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "vite.config.ts",
-    "wishlist-from-github.ts",
+    "scripts/**/*.ts",
     "eslint.config.js"
   ],
   "compilerOptions": {

@@ -56,8 +56,12 @@ Until your package is tracked, your panel page simply shows no download stats.
 
 Panel ideas are GitHub issues labelled `wishlist`, opened from the "Panel idea" issue form. A 👍
 on the issue is a vote; label it `planned` or `in progress` to show its status, and close it as
-completed once the panel ships (closing as not planned hides it). The build reads the issues from
-the GitHub API, so the site shows new ideas and votes after its next build.
+completed once the panel ships (closing as not planned hides it).
+
+The site is built from a saved copy, `src/data/wishlist.json`. Every 3 hours, and two minutes
+after a wishlist issue changes, `.github/workflows/update-wishlist.yml` fetches the issues and
+commits the file if anything changed; that push makes Cloudflare rebuild the site. Run it by hand
+from the Actions tab, or locally with `bun scripts/update-wishlist.ts`.
 
 ## Run it locally
 

@@ -1,0 +1,46 @@
+[
+  {
+    "number": 1,
+    "title": "dj-migrations-panel",
+    "summary": "A visual representation of your migrations along with a snapshot of what models were changed and what SQL was was/will be executed by a migration.",
+    "rationale": "Similar to urls or signal inspecting panels, it is useful to have this level of application information in one easily searchable place.",
+    "category": "Database",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 1,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/1"
+  },
+  {
+    "number": 2,
+    "title": "django-huey support",
+    "summary": "Support for huey for managing workers and tasks, similar to what is available in dj-celery-panel",
+    "rationale": "It would add support for managing another popular task system through the admin.",
+    "category": "Background Jobs",
+    "status": "requested",
+    "author": "Natgho",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/2"
+  },
+  {
+    "number": 3,
+    "title": "orm queries execution panel",
+    "summary": "We want a usecase where from admin panel dev users with staff role can execute all read only like orm queries and see the results, like manage.py dbshell equivalent using django orm style. most server cli shell utlitities like kubectx etc would need prod cluster access which devops team don't usually provide to dev teams.",
+    "rationale": "Devs often need to run custom queries to debug production issues or gather evidence for new features that they might be developing/working on. Asking devops teams or owner teams with this info creates dependency and is a major blocker for developers and creates friction in product development.",
+    "category": "Database",
+    "status": "requested",
+    "author": "utkarshpandey12",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/3"
+  },
+  {
+    "number": 4,
+    "title": "django guardian support",
+    "summary": "a monitoring tool that could trigger the operations listed in the cheat sheet from the admin panel, along with assigned permissions, revoked permissions, permission changes, current permission tables and their sizes, I'm sure it would be perfect.",
+    "rationale": "Better observability for guardian operations and extra functionality.",
+    "category": "Security",
+    "status": "requested",
+    "author": "Natgho",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/4"
+  }
+]

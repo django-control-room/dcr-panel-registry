@@ -1,6 +1,10 @@
-import type { Plugin } from "vite";
+// Saves the wishlist (GitHub issues labelled "wishlist") to src/data/wishlist.json.
+// Run by .github/workflows/update-wishlist.yml; a changed file is committed, and that push
+// makes Cloudflare rebuild the site. Run locally with: bun scripts/update-wishlist.ts
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 
-import { WISHLIST_REPO, type WishlistIdea } from "./src/data/wishlist";
+import { WISHLIST_REPO, type WishlistIdea } from "../src/data/wishlist";
 
 // An idea is an issue labelled "wishlist", opened from .github/ISSUE_TEMPLATE/wishlist.yml.
 const WISHLIST_LABEL = "wishlist";
@@ -59,8 +63,8 @@ export function convertIssueToWishlistIdea(issue: GitHubIssue): WishlistIdea {
   };
 }
 
-async function fetchWishlistIssuesFromGitHub() {
-  // Optional, but Cloudflare's shared build machines can hit GitHub's anonymous rate limit.
+async function fetchWishlistFromGitHub() {
+  // Optional locally; the workflow passes its built-in token to avoid the anonymous rate limit.
   const token = process.env["GITHUB_TOKEN"];
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
@@ -84,32 +88,23 @@ async function fetchWishlistIssuesFromGitHub() {
     (issue) =>
       !issue.pull_request && (issue.state === "open" || issue.state_reason === "completed"),
   );
-  return keptIssues.map(convertIssueToWishlistIdea).sort((a, b) => b.votes - a.votes);
+  return keptIssues
+    .map(convertIssueToWishlistIdea)
+    .sort((a, b) => b.votes - a.votes || a.number - b.number);
 }
 
-const VIRTUAL_ID = "virtual:wishlist";
+const WISHLIST_FILE = new URL("../src/data/wishlist.json", import.meta.url);
 
-/** Provides `import wishlist from "virtual:wishlist"`, fetched from GitHub once per build. */
-export function wishlistFromGitHub(): Plugin {
-  let isBuild = false;
-  let wishlist: Promise<WishlistIdea[]> | null = null;
-  return {
-    name: "wishlist-from-github",
-    configResolved(config) {
-      isBuild = config.command === "build";
-    },
-    resolveId(id) {
-      return id === VIRTUAL_ID ? `\0${VIRTUAL_ID}` : null;
-    },
-    async load(id) {
-      if (id !== `\0${VIRTUAL_ID}`) return null;
-      wishlist ??= fetchWishlistIssuesFromGitHub().catch((error: unknown) => {
-        // A failed build keeps the previous deploy live; publishing an empty wishlist would not.
-        if (isBuild) throw error;
-        console.warn(`[wishlist] could not load ideas from GitHub, showing none:\n${error}`);
-        return [];
-      });
-      return `export default ${JSON.stringify(await wishlist)};`;
-    },
-  };
+// Only runs as a script, so the parser can be imported for checks without fetching.
+const runAsScript = import.meta.url === pathToFileURL(process.argv[1] ?? "").href;
+if (runAsScript) {
+  const wishlist = await fetchWishlistFromGitHub();
+  const json = `${JSON.stringify(wishlist, null, 2)}\n`;
+  const previous = readFileSync(WISHLIST_FILE, "utf8");
+  if (json === previous) {
+    console.log(`Wishlist unchanged (${wishlist.length} ideas).`);
+  } else {
+    writeFileSync(WISHLIST_FILE, json);
+    console.log(`Wishlist updated (${wishlist.length} ideas).`);
+  }
 }

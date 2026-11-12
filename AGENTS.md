@@ -13,12 +13,13 @@ The panel directory for Django Control Room at
   bare `/file` URL. Reference `public/` files through `import.meta.env.BASE_URL`.
 - Content is resolved at build time:
   - panels come from `panels/`;
-  - wishlist ideas come from GitHub issues, via `wishlist-from-github.ts`.
+  - wishlist ideas come from `src/data/wishlist.json`, which a scheduled workflow refreshes from
+    GitHub issues and commits (`scripts/update-wishlist.ts`). The build itself makes no requests.
 - Changes reach the site through a rebuild.
 - The browser only fetches public read-only JSON, like stats.djangocontrolroom.com, and only on
   the pages that need it.
 - Secrets live in the build environment, never in the repo or bundle.
-- If build-time data can't load, fail the build. Cloudflare then keeps the last deploy live.
+- External data is committed to the repo by a workflow, not fetched during the build.
 
 ## vite-react-ssg
 

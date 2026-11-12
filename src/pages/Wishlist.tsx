@@ -1,9 +1,8 @@
 import { useMemo, useState } from "react";
 import { ArrowUpRight, Plus, Search, ThumbsUp } from "lucide-react";
-import wishlist from "virtual:wishlist";
 
 import Seo from "@/components/Seo";
-import { statusLabels, SUGGEST_IDEA_URL } from "@/data/wishlist";
+import { statusLabels, SUGGEST_IDEA_URL, wishlist } from "@/data/wishlist";
 import { DISCORD_URL } from "@/lib/links";
 
 export default function Wishlist() {

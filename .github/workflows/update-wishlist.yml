@@ -1,0 +1,53 @@
+name: Update wishlist
+
+# Saves the wishlist issues to src/data/wishlist.json and commits the file when it changed. The
+# push makes Cloudflare rebuild the site, so builds only happen when the wishlist really changed,
+# and the commits keep the repo active so GitHub doesn't pause this schedule.
+# 👍 reactions don't trigger any workflow event, so new votes are picked up by the schedule.
+
+on:
+  schedule:
+    # Every 3 hours, off the hour when GitHub's scheduler is busiest.
+    - cron: "17 */3 * * *"
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  update-wishlist:
+    # Only wishlist issues matter; "unlabeled" checks the label that was just removed.
+    if: >-
+      github.event_name != 'issues' ||
+      contains(github.event.issue.labels.*.name, 'wishlist') ||
+      github.event.label.name == 'wishlist'
+    runs-on: ubuntu-latest
+    # A burst of issue edits waits out the delay below and makes one commit, not one per edit.
+    # Set on the job, not the workflow, so a skipped run for a non-wishlist issue cancels nothing.
+    concurrency:
+      group: update-wishlist
+      cancel-in-progress: true
+    steps:
+      - name: Wait for related edits to settle
+        if: github.event_name == 'issues'
+        run: sleep 120
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Fetch the wishlist issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bun scripts/update-wishlist.ts
+      - name: Commit the wishlist if it changed
+        run: |
+          if git diff --quiet -- src/data/wishlist.json; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/wishlist.json
+          git commit -m "Update wishlist from GitHub issues"
+          git pull --rebase
+          git push
