@@ -53,5 +53,16 @@
     "author": "yassi",
     "votes": 0,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/5"
+  },
+  {
+    "number": 6,
+    "title": "pip freeze panel",
+    "summary": "Ability to inspect the python environment and the installed packages and metadata. A similar package is built in one of the DCR tutorials - this wishlist item calls for a more fleshed out solution.",
+    "rationale": "This is useful for quickly checking what's available in the current environment and looking up information (docs, etc.) In production, a coding agent may not have access to your python environment but may have access to this DCR tool via MCP to provide context about the python environment.",
+    "category": "Developer tooling",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/6"
   }
 ]
