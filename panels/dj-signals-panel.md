@@ -6,7 +6,7 @@ categories:
 repository: https://github.com/django-control-room/dj-signals-panel
 docs: https://django-control-room.github.io/dj-signals-panel/
 maintainer: Django Control Room
-first_release: 2025-07-10
+first_release: 2025-04-01
 highlights:
   - Complete overview of all registered signals
   - Receiver mapping with source module details

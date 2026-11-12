@@ -6,7 +6,7 @@ categories:
 repository: https://github.com/django-control-room/dj-celery-panel
 docs: https://django-control-room.github.io/dj-celery-panel/
 maintainer: Django Control Room
-first_release: 2025-03-01
+first_release: 2025-12-19
 highlights:
   - Real-time worker and queue status overview
   - Task history with failure details and retries
