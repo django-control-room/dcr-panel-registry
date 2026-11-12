@@ -1,3 +1,4 @@
+import { findKnownCategory } from "./categories";
 import ideas from "./wishlist.json";
 
 // Wishlist ideas are GitHub issues. scripts/update-wishlist.ts saves them to wishlist.json on a
@@ -26,4 +27,9 @@ export const statusLabels: Record<WishlistIdea["status"], string> = {
   shipped: "Shipped",
 };
 
-export const wishlist = ideas as WishlistIdea[];
+// Categories are typed on GitHub, so write known ones in their usual spelling ("Background Jobs"
+// becomes "Background jobs"); anything else, like "Other", is kept as written.
+export const wishlist = (ideas as WishlistIdea[]).map((idea) => ({
+  ...idea,
+  category: idea.category && (findKnownCategory(idea.category) ?? idea.category),
+}));

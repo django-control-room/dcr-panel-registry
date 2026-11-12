@@ -1,24 +1,36 @@
 import { useMemo, useState } from "react";
 import { ArrowUpRight, Plus, Search, ThumbsUp } from "lucide-react";
 
+import CategoryFilter, { ALL_CATEGORIES } from "@/components/CategoryFilter";
 import Seo from "@/components/Seo";
 import { statusLabels, SUGGEST_IDEA_URL, wishlist } from "@/data/wishlist";
 import { DISCORD_URL } from "@/lib/links";
 
+function countIdeasPerCategory() {
+  const counts = new Map<string, number>();
+  for (const idea of wishlist) {
+    if (idea.category) counts.set(idea.category, (counts.get(idea.category) ?? 0) + 1);
+  }
+  return counts;
+}
+
 export default function Wishlist() {
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState(ALL_CATEGORIES);
+  const categoryCounts = useMemo(countIdeasPerCategory, []);
 
-  // Already sorted by votes at build time.
+  // Already sorted by votes when the wishlist was saved.
   const matchingIdeas = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return wishlist;
-    return wishlist.filter((idea) =>
-      [idea.title, idea.summary, idea.rationale ?? "", idea.category ?? ""]
+    return wishlist.filter((idea) => {
+      if (category !== ALL_CATEGORIES && idea.category !== category) return false;
+      if (!q) return true;
+      return [idea.title, idea.summary, idea.rationale ?? "", idea.category ?? ""]
         .join(" ")
         .toLowerCase()
-        .includes(q),
-    );
-  }, [query]);
+        .includes(q);
+    });
+  }, [query, category]);
 
   return (
     <div>
@@ -64,6 +76,16 @@ export default function Wishlist() {
       </section>
 
       <section className="mx-auto max-w-4xl px-6 py-14">
+        {categoryCounts.size > 0 && (
+          <div className="mb-8">
+            <CategoryFilter
+              counts={categoryCounts}
+              total={wishlist.length}
+              selected={category}
+              onSelect={setCategory}
+            />
+          </div>
+        )}
         <div className="space-y-4">
           {matchingIdeas.map((idea) => (
             <div
@@ -124,7 +146,7 @@ export default function Wishlist() {
           <p className="rounded-2xl border border-border bg-card p-10 text-center text-sm text-muted-foreground shadow-soft">
             {wishlist.length === 0
               ? "No ideas yet. Suggest the first one."
-              : "Nothing matches that search yet. Be the first to suggest it."}
+              : "No ideas match that yet. Be the first to suggest it."}
           </p>
         )}
 

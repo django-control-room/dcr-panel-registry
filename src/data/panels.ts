@@ -1,21 +1,11 @@
 import { parse as parseYaml } from "yaml";
 import { z } from "zod";
 
+import { findKnownCategory, type Category } from "./categories";
+
 // Every panel in the registry is one markdown file in /panels, named after its PyPI package.
 // The frontmatter holds the structured fields below; the body is the panel's description.
 // See CONTRIBUTING.md for the format panel authors follow.
-
-export const CATEGORIES = [
-  "Background jobs",
-  "Database",
-  "Developer tooling",
-  "Infrastructure",
-  "Integrations",
-  "Observability",
-  "Performance",
-  "Security",
-  "Games",
-] as const;
 
 // Panels hidden from the site without deleting their file: no listing, no page, and the file
 // isn't validated. Add the package name (the file name without .md) to hide one; remove it to
@@ -35,16 +25,12 @@ const frontmatterSchema = z
   })
   .strict();
 
-export type Category = (typeof CATEGORIES)[number];
-
 // Matched ignoring case and written back in the canonical spelling. Unknown names are dropped,
 // not rejected, so a new category in a pull request doesn't fail the build.
 function keepKnownCategories(names: string[]): Category[] {
   const known: Category[] = [];
   for (const name of names) {
-    const match = CATEGORIES.find(
-      (category) => category.toLowerCase() === name.trim().toLowerCase(),
-    );
+    const match = findKnownCategory(name);
     if (match && !known.includes(match)) known.push(match);
   }
   return known;

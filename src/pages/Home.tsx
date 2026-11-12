@@ -2,12 +2,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, GitPullRequest, Lightbulb, Search, X } from "lucide-react";
 
+import CategoryFilter, { ALL_CATEGORIES } from "@/components/CategoryFilter";
 import PanelCard from "@/components/PanelCard";
 import Seo from "@/components/Seo";
-import { panels, type Category } from "@/data/panels";
+import type { Category } from "@/data/categories";
+import { panels } from "@/data/panels";
 import { wishlist } from "@/data/wishlist";
 
-const ALL = "All";
 const CONTRIBUTING_URL =
   "https://github.com/django-control-room/dcr-panel-registry/blob/main/CONTRIBUTING.md";
 
@@ -40,17 +41,17 @@ function useSlashToFocus(input: React.RefObject<HTMLInputElement | null>) {
 
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState(ALL);
+  const [category, setCategory] = useState(ALL_CATEGORIES);
   const searchInput = useRef<HTMLInputElement>(null);
   useSlashToFocus(searchInput);
 
   const categoryCounts = useMemo(countPanelsPerCategory, []);
-  const categories = useMemo(() => [...categoryCounts.keys()].sort(), [categoryCounts]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return panels.filter((p) => {
-      const matchesCategory = category === ALL || p.categories.includes(category as Category);
+      const matchesCategory =
+        category === ALL_CATEGORIES || p.categories.includes(category as Category);
       if (!matchesCategory) return false;
       if (!q) return true;
       return [p.name, p.label, p.tagline, p.description, ...p.categories, ...p.highlights]
@@ -60,16 +61,11 @@ export default function Home() {
     });
   }, [query, category]);
 
-  const isFiltered = query.trim() !== "" || category !== ALL;
+  const isFiltered = query.trim() !== "" || category !== ALL_CATEGORIES;
   const clearFilters = () => {
     setQuery("");
-    setCategory(ALL);
+    setCategory(ALL_CATEGORIES);
   };
-
-  const chipClass = (selected: boolean) =>
-    selected
-      ? "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-primary bg-accent px-3.5 py-1.5 text-sm font-medium text-accent-foreground"
-      : "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm text-muted-foreground transition-colors hover:border-foreground/20 hover:text-foreground";
 
   return (
     <div>
@@ -126,33 +122,12 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-10 md:py-14">
-        <div
-          className="-mx-6 flex gap-2 overflow-x-auto px-6 [scrollbar-width:none] md:mx-0 md:flex-wrap md:px-0 [&::-webkit-scrollbar]:hidden"
-          role="group"
-          aria-label="Filter by category"
-        >
-          <button
-            type="button"
-            onClick={() => setCategory(ALL)}
-            aria-pressed={category === ALL}
-            className={chipClass(category === ALL)}
-          >
-            All
-            <span className="text-xs tabular-nums opacity-70">{panels.length}</span>
-          </button>
-          {categories.map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setCategory(item)}
-              aria-pressed={item === category}
-              className={chipClass(item === category)}
-            >
-              {item}
-              <span className="text-xs tabular-nums opacity-70">{categoryCounts.get(item)}</span>
-            </button>
-          ))}
-        </div>
+        <CategoryFilter
+          counts={categoryCounts}
+          total={panels.length}
+          selected={category}
+          onSelect={setCategory}
+        />
 
         <div className="mt-6 flex items-center justify-between gap-4 text-sm text-muted-foreground">
           <p aria-live="polite">
