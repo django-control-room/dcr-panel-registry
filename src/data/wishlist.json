@@ -11,6 +11,28 @@
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/1"
   },
   {
+    "number": 6,
+    "title": "pip freeze panel",
+    "summary": "Ability to inspect the python environment and the installed packages and metadata. A similar package is built in one of the DCR tutorials - this wishlist item calls for a more fleshed out solution.",
+    "rationale": "This is useful for quickly checking what's available in the current environment and looking up information (docs, etc.) In production, a coding agent may not have access to your python environment but may have access to this DCR tool via MCP to provide context about the python environment.",
+    "category": "Developer tooling",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 1,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/6"
+  },
+  {
+    "number": 7,
+    "title": "s3 panel",
+    "summary": "Tool for browsing s3 buckets via the Django admin.",
+    "rationale": "Decrease the need to leave the Django admin to perform a basic task like looking up a file or image in the AWS s3 browser UI.",
+    "category": "Infrastructure",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 1,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/7"
+  },
+  {
     "number": 11,
     "title": "dj-settings-panel",
     "summary": "Introspection for settings through the admin. Possibly add ways to change settings live (needs discussion)",
@@ -64,28 +86,6 @@
     "author": "yassi",
     "votes": 0,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/5"
-  },
-  {
-    "number": 6,
-    "title": "pip freeze panel",
-    "summary": "Ability to inspect the python environment and the installed packages and metadata. A similar package is built in one of the DCR tutorials - this wishlist item calls for a more fleshed out solution.",
-    "rationale": "This is useful for quickly checking what's available in the current environment and looking up information (docs, etc.) In production, a coding agent may not have access to your python environment but may have access to this DCR tool via MCP to provide context about the python environment.",
-    "category": "Developer tooling",
-    "status": "requested",
-    "author": "yassi",
-    "votes": 0,
-    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/6"
-  },
-  {
-    "number": 7,
-    "title": "s3 panel",
-    "summary": "Tool for browsing s3 buckets via the Django admin.",
-    "rationale": "Decrease the need to leave the Django admin to perform a basic task like looking up a file or image in the AWS s3 browser UI.",
-    "category": "Infrastructure",
-    "status": "requested",
-    "author": "yassi",
-    "votes": 0,
-    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/7"
   },
   {
     "number": 8,
