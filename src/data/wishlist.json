@@ -42,5 +42,16 @@
     "author": "Natgho",
     "votes": 0,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/4"
+  },
+  {
+    "number": 5,
+    "title": "dj-command-panel",
+    "summary": "Expose a Django project's management commands and information about them. Allow a user to run commands from the admin.",
+    "rationale": "This is both useful as a way to quickly inspect what commands are available and as a way to execute commands quickly through the admin. There are quite a few issues to figure out such as where commands will execute and how to make sure the running web processes are unaffected.",
+    "category": "Developer tooling",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/5"
   }
 ]
