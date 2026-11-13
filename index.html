@@ -9,7 +9,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <script>
       try {
-        var saved = localStorage.getItem("dcr-panel-registry-theme");
+        var saved = localStorage.getItem("dcr-theme");
         var dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
         document.documentElement.classList.toggle("dark", dark);
         document.documentElement.style.colorScheme = dark ? "dark" : "light";

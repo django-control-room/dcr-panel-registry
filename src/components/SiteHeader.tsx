@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const MAIN_SITE = "https://djangocontrolroom.com/";
-const THEME_KEY = "dcr-panel-registry-theme";
+// Same key as the main site: both are served from djangocontrolroom.com (registry at /panels), so they share localStorage.
+const THEME_KEY = "dcr-theme";
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
