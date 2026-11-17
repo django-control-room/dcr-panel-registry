@@ -1,3 +1,5 @@
+[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/aJgys9TFvA)
+
 # Django Control Room Panel Registry
 
 This codebase powers [djangocontrolroom.com/panels](https://djangocontrolroom.com/panels/), the directory
