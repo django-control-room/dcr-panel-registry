@@ -130,5 +130,16 @@
     "author": "yassi",
     "votes": 0,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/12"
+  },
+  {
+    "number": 13,
+    "title": "dj-kanban-panel",
+    "summary": "Provide a lightweight kanban board similar to something like trello.",
+    "rationale": "Ability to do some sort of planning and task management and have it live in the admin, especially if these are admin specific tasks",
+    "category": "None",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 0,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/13"
   }
 ]
