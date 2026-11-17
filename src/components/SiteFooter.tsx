@@ -10,7 +10,10 @@ const columns = [
       { label: "Docs", href: "https://django-control-room.github.io/dj-control-room/" },
       { label: "Panels", href: `${MAIN_SITE}/panels/` },
       { label: "Cloud", href: `${MAIN_SITE}/cloud` },
-      { label: "Changelog", href: "https://github.com/django-control-room/dj-control-room/releases" },
+      {
+        label: "Changelog",
+        href: "https://github.com/django-control-room/dj-control-room/releases",
+      },
     ],
   },
   {
