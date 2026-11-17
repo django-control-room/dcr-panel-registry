@@ -18,3 +18,18 @@ jobs:
       - run: bun run lint
       # Validates every file in panels/ and prerenders the site.
       - run: bun run build
+
+  # src/data/wishlist.json is generated from wishlist issues by update-wishlist.yml.
+  wishlist-is-generated:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject edits to the generated wishlist
+        run: |
+          if git diff --name-only "origin/${{ github.base_ref }}...HEAD" | grep -qx src/data/wishlist.json; then
+            echo "::error file=src/data/wishlist.json::This file is generated from wishlist issues. Open or edit an issue instead."
+            exit 1
+          fi
