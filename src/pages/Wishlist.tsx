@@ -47,8 +47,7 @@ export default function Wishlist() {
             Panels that don&apos;t exist <span className="text-gradient-django">yet</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-            These are the panels people keep asking for. Give a 👍 on GitHub to the ones you&apos;d
-            actually install: demand decides what gets built next.
+            These are the panels people keep asking for. Give a 👍 on GitHub to upvote them.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">

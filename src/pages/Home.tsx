@@ -88,8 +88,7 @@ export default function Home() {
             Every panel for your <span className="text-gradient-django">Django admin</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground md:text-lg">
-            Find tools that drop straight into Django Control Room: what each one does, how to
-            install it, and how widely it&apos;s used.
+            Find tools that drop straight into Django Control Room.
           </p>
 
           <label className="mx-auto mt-8 flex max-w-xl items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3.5 text-left shadow-soft transition-colors focus-within:border-primary">
