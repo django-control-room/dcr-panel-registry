@@ -44,6 +44,17 @@
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/11"
   },
   {
+    "number": 16,
+    "title": "File Storage Explorer",
+    "summary": "Ability to peruse the filesystem. Instead opening up a shell and requiring access for it, it is possible to give admin users read only access to limited parts of the files system (static or media roots for exampe.)",
+    "rationale": "Sometimes you need to know if a file was created, whether because it's a lock file that must exist, or you just need to verify that a file upload actually happened.",
+    "category": "Infrastructure",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 1,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/16"
+  },
+  {
     "number": 2,
     "title": "django-huey support",
     "summary": "Support for huey for managing workers and tasks, similar to what is available in dj-celery-panel",
@@ -163,17 +174,6 @@
     "author": "yassi",
     "votes": 0,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/15"
-  },
-  {
-    "number": 16,
-    "title": "File Storage Explorer",
-    "summary": "Ability to peruse the filesystem. Instead opening up a shell and requiring access for it, it is possible to give admin users read only access to limited parts of the files system (static or media roots for exampe.)",
-    "rationale": "Sometimes you need to know if a file was created, whether because it's a lock file that must exist, or you just need to verify that a file upload actually happened.",
-    "category": "Infrastructure",
-    "status": "requested",
-    "author": "yassi",
-    "votes": 0,
-    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/16"
   },
   {
     "number": 17,
