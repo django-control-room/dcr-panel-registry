@@ -49,7 +49,7 @@
     "summary": "Ability to peruse the filesystem. Instead opening up a shell and requiring access for it, it is possible to give admin users read only access to limited parts of the files system (static or media roots for exampe.)",
     "rationale": "Sometimes you need to know if a file was created, whether because it's a lock file that must exist, or you just need to verify that a file upload actually happened.",
     "category": "Infrastructure",
-    "status": "requested",
+    "status": "shipped",
     "author": "yassi",
     "votes": 1,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/16"
