@@ -44,6 +44,17 @@
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/11"
   },
   {
+    "number": 15,
+    "title": "permission explorer",
+    "summary": "Django lets you assign permissions, but understanding why a particular user has access can become difficult once groups, custom backends, and application rules enter the picture. A good initial scope is standard Django permissions, their sources, and user comparisons.",
+    "rationale": "Be able to reason very quickly about what permissions users have and why? It could be that this is mostly a presentation problem.",
+    "category": "Security",
+    "status": "requested",
+    "author": "yassi",
+    "votes": 1,
+    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/15"
+  },
+  {
     "number": 16,
     "title": "File Storage Explorer",
     "summary": "Ability to peruse the filesystem. Instead opening up a shell and requiring access for it, it is possible to give admin users read only access to limited parts of the files system (static or media roots for exampe.)",
@@ -163,17 +174,6 @@
     "author": "yassi",
     "votes": 0,
     "url": "https://github.com/django-control-room/dcr-panel-registry/issues/14"
-  },
-  {
-    "number": 15,
-    "title": "permission explorer",
-    "summary": "Django lets you assign permissions, but understanding why a particular user has access can become difficult once groups, custom backends, and application rules enter the picture. A good initial scope is standard Django permissions, their sources, and user comparisons.",
-    "rationale": "Be able to reason very quickly about what permissions users have and why? It could be that this is mostly a presentation problem.",
-    "category": "Security",
-    "status": "requested",
-    "author": "yassi",
-    "votes": 0,
-    "url": "https://github.com/django-control-room/dcr-panel-registry/issues/15"
   },
   {
     "number": 17,
